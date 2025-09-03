@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/betthoow/mokanut#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "request": "^2.88.2"
   }
 }
