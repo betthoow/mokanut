@@ -257,7 +257,7 @@ app.use('/qlapi', function(req, res, next){
 });
 
 /** Setting Current ORDER feed  */
-app.use('/qlapi/setFeed', function(req, res, next){
+app.use('/qlapi/currentorder', function(req, res, next){
     console.log("Setting Feed")
     /** Set Feed call */
     sendFeedAPI(FeedUpSelling, res, req);
