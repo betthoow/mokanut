@@ -5,7 +5,8 @@
  */
 
 var express = require('express'),
-    request = require('request');
+    request = require('request'),
+    cors = require('cors');
 
 var app = module.exports = express();
 
@@ -27,6 +28,8 @@ function error(status, msg) {
 // by mounting this middleware to /api
 // meaning only paths prefixed with "/api"
 // will cause this middleware to be invoked
+
+app.use(cors());
 
 app.use('/api', function(req, res, next){
   var key = req.query['api-key'];
