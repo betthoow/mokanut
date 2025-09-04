@@ -202,20 +202,20 @@ app.use('/qlapi/currentorder', function(req, res, next){
 
     //console.log(req.query );
     
-    if ( "burgers" in req.query && req.query.burgers > 0 ){
+    if ( "burgers" in req.query && req.query.burgers >= 0 ){
         
         FeedUpSelling.FeedList[0].FeedTextList[0].Text = req.query.burgers;
     }
     
-    if ( "sides" in req.query && req.query.sides > 0 ){
+    if ( "sides" in req.query && req.query.sides >= 0 ){
         //console.log( req.query.sides)
         FeedUpSelling.FeedList[0].FeedTextList[1].Text = req.query.sides;
     }
-    if ( "drinks" in req.query && req.query.drinks>0 ){
+    if ( "drinks" in req.query && req.query.drinks>=0 ){
         //console.log( req.query.drinks)
         FeedUpSelling.FeedList[0].FeedTextList[2].Text = req.query.drinks;
     }
-    if ( "beers" in req.query && req.query.beers >0){
+    if ( "beers" in req.query && req.query.beers >=0){
         //console.log( req.query.beers)
         FeedUpSelling.FeedList[0].FeedTextList[3].Text = req.query.beers;
     }
