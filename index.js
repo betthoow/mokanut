@@ -31,70 +31,6 @@ function error(status, msg) {
 
 app.use(cors());
 
-app.use('/api', function(req, res, next){
-  var key = req.query['api-key'];
-
-  // key isn't present
-  if (!key) return next(error(400, 'api key required'));
-
-  // key is invalid
-  if (apiKeys.indexOf(key) === -1) return next(error(401, 'invalid api key'))
-
-  // all good, store req.key for route access
-  req.key = key;
-  next();
-});
-
-// map of valid api keys, typically mapped to
-// account info with some sort of database like redis.
-// api keys do _not_ serve as authentication, merely to
-// track API usage or help prevent malicious behavior etc.
-
-var apiKeys = ['foo', 'bar', 'baz'];
-
-// these two objects will serve as our faux database
-
-var repos = [
-  { name: 'express', url: 'https://github.com/expressjs/express' },
-  { name: 'stylus', url: 'https://github.com/learnboost/stylus' },
-  { name: 'cluster', url: 'https://github.com/learnboost/cluster' }
-];
-
-var users = [
-  { name: 'tobi' }
-  , { name: 'loki' }
-  , { name: 'jane' }
-];
-
-var userRepos = {
-  tobi: [repos[0], repos[1]]
-  , loki: [repos[1]]
-  , jane: [repos[2]]
-};
-
-// we now can assume the api key is valid,
-// and simply expose the data
-
-// example: http://localhost:3000/api/users/?api-key=foo
-app.get('/api/users', function (req, res) {
-  res.send(users);
-});
-
-// example: http://localhost:3000/api/repos/?api-key=foo
-app.get('/api/repos', function (req, res) {
-  res.send(repos);
-});
-
-// example: http://localhost:3000/api/user/tobi/repos/?api-key=foo
-app.get('/api/user/:name/repos', function(req, res, next){
-  var name = req.params.name;
-  var user = userRepos[name];
-
-  if (user) res.send(user);
-  else next();
-});
-
-
 /* my code */ 
  var TOKEN = '';
 
@@ -117,7 +53,7 @@ app.get('/api/user/:name/repos', function(req, res, next){
                 {
                     "ColumnIndex": 0,
                     "LineIndex": 0,
-                    "Text": "2",
+                    "Text": "0",
                     "FeedId": 67582
                 },
                 {
@@ -248,7 +184,7 @@ app.use('/qlapi', function(req, res, next){
         'https://europe.navori.com/NavoriService/Api/GetToken',
         { json: { 'Login': 'topgolf_api' , 'Password': 'Navori75@' } },
         function (error, response, body) {
-              console.log(body);
+              //console.log(body);
               //res.send(body)
               TOKEN = body.Token
 
@@ -263,6 +199,27 @@ app.use('/qlapi', function(req, res, next){
 app.use('/qlapi/currentorder', function(req, res, next){
     console.log("Setting Feed")
     /** Set Feed call */
+
+    //console.log(req.query );
+    
+    if ( "burgers" in req.query && req.query.burgers > 0 ){
+        
+        FeedUpSelling.FeedList[0].FeedTextList[0].Text = req.query.burgers;
+    }
+    
+    if ( "sides" in req.query && req.query.sides > 0 ){
+        //console.log( req.query.sides)
+        FeedUpSelling.FeedList[0].FeedTextList[1].Text = req.query.sides;
+    }
+    if ( "drinks" in req.query && req.query.drinks>0 ){
+        //console.log( req.query.drinks)
+        FeedUpSelling.FeedList[0].FeedTextList[2].Text = req.query.drinks;
+    }
+    if ( "beers" in req.query && req.query.beers >0){
+        //console.log( req.query.beers)
+        FeedUpSelling.FeedList[0].FeedTextList[3].Text = req.query.beers;
+    }
+
     sendFeedAPI(FeedUpSelling, res, req);
 });
 
@@ -404,7 +361,7 @@ var FeedQualityShoot = {
 }
 
 app.use('/qlapi/qualityshoot', function(req, res, next){
-    console.log("Setting Feed")
+    console.log("Quality shoot")
     /** Set Feed call */
     sendFeedAPI(FeedQualityShoot, res, req);
 });
@@ -633,13 +590,13 @@ app.use('/qlapi/reservationbay', function(req, res, next){
         },
         body : JSON.stringify(feedset)
     };
-
+    //console.log( feedset.FeedList[0] ); 
     function callback(error, response, body) {
-        console.log( body )
+        //console.log( body )
         if (!error && response.statusCode == 200) {
             const info = JSON.parse(body);
-            console.log("Return of the Quality Shoot")
-            console.log(options);
+            console.log("SetFeeds API Returns")
+            //console.log(options);
 
             res.send(info)
         }
