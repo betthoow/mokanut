@@ -594,7 +594,6 @@ app.use('/qlapi/reservationbay', function(req, res){
         console.log( req.query.baynumber )
         BayNumber = parseInt( req.query.baynumber );
     }
-    console.log(FeedReservation.FeedList[0] );
 
     if ( "baystatus" in req.query ){
         console.log(req.query.baystatus )
