@@ -196,7 +196,7 @@ app.use('/qlapi', function(req, res, next){
 });
 
 /** Setting Current ORDER feed  */
-app.use('/qlapi/currentorder', function(req, res, next){
+app.use('/qlapi/currentorder', function(req, res){
     console.log("Setting Feed")
     /** Set Feed call */
 
@@ -360,9 +360,18 @@ var FeedQualityShoot = {
     ]
 }
 
-app.use('/qlapi/qualityshoot', function(req, res, next){
+app.use('/qlapi/qualityshoot', function(req, res){
     console.log("Quality shoot")
     /** Set Feed call */
+
+    if ( "shootqa" in req.query ){
+        console.log(req.query.shootqa)
+        console.log( FeedQualityShoot.FeedList[0].FeedTextList[2] )
+        FeedQualityShoot.FeedList[0].FeedTextList[2].Text = req.query.shootqa;
+    }
+
+
+
     sendFeedAPI(FeedQualityShoot, res, req);
 });
 
@@ -576,7 +585,7 @@ var FeedReservation = {
 }
 
 /** Reservation bay datafeed - API callback */
-app.use('/qlapi/reservationbay', function(req, res, next){
+app.use('/qlapi/reservationbay', function(req, res){
     console.log("Reservation Bay Feed")
     /** Set Feed call */
     sendFeedAPI(FeedReservation, res, req);
