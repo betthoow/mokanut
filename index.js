@@ -366,7 +366,6 @@ app.use('/qlapi/qualityshoot', function(req, res){
 
     if ( "shootqa" in req.query ){
         console.log(req.query.shootqa)
-        console.log( FeedQualityShoot.FeedList[0].FeedTextList[2] )
         FeedQualityShoot.FeedList[0].FeedTextList[2].Text = req.query.shootqa;
     }
 
@@ -584,10 +583,25 @@ var FeedReservation = {
     ]
 }
 
+var BayStatus = "Available", BayNumber = 1;
+
 /** Reservation bay datafeed - API callback */
 app.use('/qlapi/reservationbay', function(req, res){
     console.log("Reservation Bay Feed")
     /** Set Feed call */
+
+    if ( "baynumber" in req.query ){
+        console.log( req.query.baynumber )
+        BayNumber = parseInt( req.query.baynumber );
+    }
+    console.log(FeedReservation.FeedList[0] );
+
+    if ( "baystatus" in req.query ){
+        console.log(req.query.baystatus )
+        FeedReservation.FeedList[0].FeedTextList[BayNumber+5].Text = req.query.baystatus;
+    }
+    
+
     sendFeedAPI(FeedReservation, res, req);
 });
 
